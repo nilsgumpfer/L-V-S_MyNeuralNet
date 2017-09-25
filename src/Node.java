@@ -17,7 +17,7 @@ public class Node {
 
     public Node(int layer, int nodeNumber, ActivationFunction activationFunction) {
         this.activationFunction = activationFunction;
-        this.nodeID = layer + "." + nodeNumber;
+        this.nodeID = layer + "-" + nodeNumber;
         logger.info("Created node {}", nodeID);
     }
 
@@ -41,7 +41,7 @@ public class Node {
 
     public void activate(double input) {
         activation = activationFunction.calcOutput(input);
-        logger.info("Node activated: input {} activation {}", nodeID, activation);
+        logger.info("Node {} activated: input {} activation {}",nodeID, input, activation);
     }
 
     public double getActivation(){

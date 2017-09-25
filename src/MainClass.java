@@ -11,8 +11,7 @@ public class MainClass {
     }
 
     private void train() {
-        Trainer trainer = new Trainer(net);
-        trainer.trainNet(1);
+        new Trainer(net).trainNet(1);
     }
 
     private List<List<Node>> net;

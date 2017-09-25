@@ -32,13 +32,10 @@ public class GlobalManager {
     public double getRandomOneOrZero()
     {
         int number = (int) (Math.random() * 10000000);
-        if(number % 2 == 0) {
-            logger.info("rand: {} return: {}", number, 1);
+
+        if(number % 2 == 0)
             return 1;
-        }
-        else {
-            logger.info("rand: {} return: {}", number, 0);
+        else
             return 0;
-        }
     }
 }
