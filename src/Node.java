@@ -8,6 +8,7 @@ public class Node {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private ActivationFunction activationFunction;
+    private double activation = 0.0;
     private double error = 0.0;
     private List<Link> incomingLinks = new ArrayList<>();
     private List<Link> outgoingLinks = new ArrayList<>();
@@ -28,10 +29,26 @@ public class Node {
 
     public Link pullLink()
     {
-        return new Link(this);
+        Link link = new Link(this);
+        outgoingLinks.add(link);
+
+        return link;
     }
 
     public String getID() {
         return nodeID;
+    }
+
+    public void activate(double input) {
+        activation = activationFunction.calcOutput(input);
+        logger.info("Node activated: input {} activation {}", nodeID, activation);
+    }
+
+    public double getActivation(){
+        return activation;
+    }
+
+    public List<Link> getIncomingLinks() {
+        return incomingLinks;
     }
 }

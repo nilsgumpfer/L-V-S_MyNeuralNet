@@ -44,13 +44,15 @@ public class Helper {
         List<List<Node>> layerCollection = new ArrayList<>();
 
         if(numberOfLayers != layerProperties.length) {
-            throw new IllegalArgumentException("createLayersAndConnectThem(): You have to pass over a corresponding number of layers and node-counts");
+            throw new IllegalArgumentException("createLayersAndConnectThem(): You have to pass over a corresponding number of layers and properties");
         }
 
         for (int i = 0; i < numberOfLayers; i++)
         {
             layerCollection.add(createLayer(i, layerProperties[i].getNumberOfNodes(), layerProperties[i].getActivationFunction()));
         }
+
+        connectAllLayers(layerCollection);
 
         return layerCollection;
     }
@@ -64,6 +66,27 @@ public class Helper {
                 return new Sigmoid();
             default:
                 return new Sigmoid();
+        }
+    }
+
+    public List<Node> getInputNodes(List<List<Node>> net)
+    {
+        return net.get(0);
+    }
+
+    public List<Node> getOutputNodes(List<List<Node>> net)
+    {
+        return net.get(net.size()-1);
+    }
+
+    public void processActivation(List<List<Node>> net)
+    {
+        LayerVisitor layerVisitor = new LayerVisitor();
+
+        //skip first layer
+        for (int i = 1; i < net.size(); i++) {
+            //activate nodes for each layer / collect values for each node
+            layerVisitor.visit(net.get(i));
         }
     }
 }
