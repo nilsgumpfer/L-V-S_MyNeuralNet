@@ -5,5 +5,5 @@ public class Link {
         this.weight = weight;
     }
 
-    
+
 }
