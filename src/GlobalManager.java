@@ -11,6 +11,7 @@ public class GlobalManager {
     private double randRangeLow;
     private double randRangeHigh;
     private double globalError = 0.0;
+    private double activeThreshold = 0.5;
     private List<Double> errorHistory = new ArrayList<>();
 
     private GlobalManager(){}
@@ -37,5 +38,9 @@ public class GlobalManager {
             return 1;
         else
             return 0;
+    }
+
+    public double getActiveThreshold() {
+        return activeThreshold;
     }
 }

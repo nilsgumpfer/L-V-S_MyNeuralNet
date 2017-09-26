@@ -13,7 +13,7 @@ public class Helper {
             for(Node nodeTwo : layerTwo)
             {
                 nodeTwo.connectLink(nodeOne.pullLink());
-                logger.info("Connected node {} to node {}",nodeOne.getID(), nodeTwo.getID());
+                logger.trace("Connected node {} to node {}",nodeOne.getID(), nodeTwo.getID());
             }
         }
     }
@@ -88,5 +88,90 @@ public class Helper {
             //activate nodes for each layer / collect values for each node
             layerVisitor.visit(net.get(i));
         }
+    }
+
+    public double convertBinToDec(Double[] binaryValues)
+    {
+        double result = 0.0;
+
+        for (int i = 0; i < binaryValues.length; i++) {
+            result += binaryValues[i] * Math.pow(2,i);
+        }
+
+        return result;
+    }
+
+    public double getValueOfOutputLayer(List<Node> outputNodes)
+    {
+        double result = 0.0;
+
+        for (int i = 0; i < outputNodes.size(); i++) {
+            if(outputNodes.get(i).getActivation() >= GlobalManager.getInstance().getActiveThreshold())
+                result += Math.pow(2,i);
+        }
+
+        return result;
+    }
+
+    public Double[] getTargetAnswerForDecInput(double targetValue) {
+        switch ((int)targetValue)
+        {
+            case 1:
+                return new Double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 2:
+                return new Double[]{1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 3:
+                return new Double[]{1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 4:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 5:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 6:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 7:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 8:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 9:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 10:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            case 11:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0};
+            case 12:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+            case 13:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0};
+            case 14:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0};
+            case 15:
+                return new Double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+            default:
+                return new Double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        }
+    }
+
+    public int countValuesGreaterThreshold(List<Node> outputNodes) {
+        int counter = 0;
+
+        for(Node node : outputNodes)
+        {
+            if(node.getActivation() >= GlobalManager.getInstance().getActiveThreshold())
+                counter++;
+        }
+
+        return counter;
+    }
+
+    public int countValuesGreaterThreshold(Double[] targetValues) {
+        int counter = 0;
+
+        for(Double value : targetValues)
+        {
+            if(value >= GlobalManager.getInstance().getActiveThreshold())
+                counter++;
+        }
+
+        return counter;
     }
 }
