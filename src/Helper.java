@@ -174,4 +174,19 @@ public class Helper {
 
         return counter;
     }
+
+    public List<Link> getAllLinks(List<List<Node>> net)
+    {
+        List<Link> links = new ArrayList<>();
+
+        for(List<Node> layer : net)
+        {
+            for(Node node : layer)
+            {
+                links.addAll(node.getOutgoingLinks());
+            }
+        }
+
+        return links;
+    }
 }

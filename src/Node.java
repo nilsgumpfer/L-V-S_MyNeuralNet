@@ -59,4 +59,8 @@ public class Node {
     public void setError(double error) {
         this.error = error;
     }
+
+    public List<Link> getOutgoingLinks() {
+        return outgoingLinks;
+    }
 }

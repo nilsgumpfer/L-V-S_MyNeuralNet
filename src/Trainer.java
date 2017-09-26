@@ -72,6 +72,40 @@ public class Trainer {
         logger.info("target: {} given: {} error: {}",targetValue, givenValue, error);
     }
 
+    private void calculateAndAssignNewWeights() {
+        List<Link> allLinks = helper.getAllLinks(neuralNet);
+
+        for(Link link : allLinks)
+        {
+            //TODO: GO ON HERE
+        }
+
+    }
+
+    private void spreadBackErrorToNodes()
+    {
+        // Run backwards through all hidden layers, skip input and output layers
+        for (int i = neuralNet.size() - 2; i > 1 ; i--)
+        {
+            List<Node> layer = neuralNet.get(i);
+
+            for(Node node : layer)
+            {
+                double collectedErrors = 0.0;
+
+                // Sum up weighted errors of nodes one layer behind
+                for(Link link : node.getOutgoingLinks())
+                {
+                    collectedErrors += link.getWeight() * link.getEndNode().getError();
+                }
+
+                double tmpError = node.getActivation() * (1 - node.getActivation()) * collectedErrors;
+
+                node.setError(tmpError);
+            }
+        }
+    }
+
     public void activate(){
         List<Double> values = new ArrayList<>();
 
