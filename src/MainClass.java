@@ -24,7 +24,7 @@ public class MainClass {
     }
 
     private void test() {
-        trainer.test(net, 0.0,1.0,0.0,1.0);
+        trainer.test(net, 1.0,1.0,0.0,1.0);
     }
 
     private void init()
