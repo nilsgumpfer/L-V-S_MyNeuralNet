@@ -30,15 +30,16 @@ public class Trainer {
         init();
 
         for (int i = 0; i < nTimes; i++) {
-            logger.info("Training {}/{} started",i,nTimes);
+            logger.trace("Training {}/{} started",i,nTimes);
             activate();
             propagate();
             backpropagate();
+            //helper.logOutputs(neuralNet);
         }
 
         error = error / nTimes;
 
-        logger.info("Trainings ended. Error: {}",error);
+        logger.info("Error: {}%",(int)(error*100));
     }
     public void propagate(){
         new Helper().processActivation(neuralNet);
@@ -54,6 +55,23 @@ public class Trainer {
         if(targetAnswer.length != outputNodes.size())
             throw new IllegalArgumentException("backpropagate(): A corresponding number of output-nodes and target-answers is not given. Please have a look at your developments.");
 
+        calculateNodeErrors(targetAnswer);
+        spreadBackErrorsThroughNet();
+        calculateAndAssignNewWeights();
+        recalculateGlobalError(targetAnswer, givenAnswer);
+
+        logger.trace("target: {} given: {} error: {}",targetValue, givenValue, error);
+    }
+
+    private void recalculateGlobalError(Double[] targetAnswer, Double[] givenAnswer)
+    {
+        // Compare target-answer and given answer. If number of active nodes differs, increase error
+        if(helper.countValuesGreaterThreshold(givenAnswer) != helper.countValuesGreaterThreshold(targetAnswer))
+            error++;
+    }
+
+    private void calculateNodeErrors(Double[] targetAnswer)
+    {
         for (int i = 0; i < outputNodes.size(); i++)
         {
             Node currentNode = outputNodes.get(i);
@@ -61,15 +79,6 @@ public class Trainer {
 
             currentNode.setError(nodeError);
         }
-
-        spreadBackErrorToNodes();
-        calculateAndAssignNewWeights();
-
-        // Compare target-answer and given answer. If number of active nodes differs, increase error
-        if(helper.countValuesGreaterThreshold(givenAnswer) != helper.countValuesGreaterThreshold(targetAnswer))
-            error++;
-
-        logger.info("target: {} given: {} error: {}",targetValue, givenValue, error);
     }
 
     private void calculateAndAssignNewWeights() {
@@ -77,12 +86,13 @@ public class Trainer {
 
         for(Link link : allLinks)
         {
-            //TODO: GO ON HERE
+            double newWeight = link.getWeight() + GlobalManager.getInstance().getLearningRate() * link.getEndNode().getError() * link.getStartNode().getActivation();
+            link.setWeight(newWeight);
         }
 
     }
 
-    private void spreadBackErrorToNodes()
+    private void spreadBackErrorsThroughNet()
     {
         // Run backwards through all hidden layers, skip input and output layers
         for (int i = neuralNet.size() - 2; i > 1 ; i--)

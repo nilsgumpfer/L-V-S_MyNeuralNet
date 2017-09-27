@@ -10,8 +10,12 @@ public class MainClass {
 
         mainClass.init();
         mainClass.createNet();
-        mainClass.train(1000);
-        mainClass.logOutputs();
+
+        for (int i = 0; i < 100; i++) {
+            mainClass.train(10);
+        }
+
+        //mainClass.logOutputs();
     }
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -19,7 +23,7 @@ public class MainClass {
 
     private void init()
     {
-        GlobalManager.getInstance().setRandomWeightRange(0.1,0.2);
+        GlobalManager.getInstance().setRandomWeightRange(-0.1,0.2);
     }
 
     private void createNet()
@@ -32,14 +36,5 @@ public class MainClass {
 
     private void train(int nTimes) {
         new Trainer(net).trainNet(nTimes);
-    }
-
-    private void logOutputs(){
-        List<Node> outputNodes = new Helper().getOutputNodes(net);
-
-        for (Node node : outputNodes)
-        {
-            logger.info("Node {} : {}",node.getID(), node.getActivation());
-        }
     }
 }

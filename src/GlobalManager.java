@@ -13,6 +13,7 @@ public class GlobalManager {
     private double globalError = 0.0;
     private double activeThreshold = 0.5;
     private List<Double> errorHistory = new ArrayList<>();
+    private double learningRate = 1.0;
 
     private GlobalManager(){}
 
@@ -27,7 +28,9 @@ public class GlobalManager {
         randRangeLow = low;
     }
     public double getRandomWeight(){
-        return ThreadLocalRandom.current().nextDouble(randRangeLow, randRangeHigh);
+        double rand = ThreadLocalRandom.current().nextDouble(randRangeLow, randRangeHigh);
+        logger.trace("RAND: {}", rand);
+        return rand;
     }
 
     public double getRandomOneOrZero()
@@ -42,5 +45,9 @@ public class GlobalManager {
 
     public double getActiveThreshold() {
         return activeThreshold;
+    }
+
+    public double getLearningRate() {
+        return learningRate;
     }
 }

@@ -107,7 +107,7 @@ public class Helper {
 
         for (int i = 0; i < outputNodes.size(); i++) {
             if(outputNodes.get(i).getActivation() >= GlobalManager.getInstance().getActiveThreshold())
-                result += Math.pow(2,i);
+                result++;
         }
 
         return result;
@@ -188,5 +188,14 @@ public class Helper {
         }
 
         return links;
+    }
+
+    public void logOutputs(List<List<Node>> net){
+        List<Node> outputNodes = new Helper().getOutputNodes(net);
+
+        for (Node node : outputNodes)
+        {
+            logger.info("Node {} : {}",node.getID(), node.getActivation());
+        }
     }
 }
