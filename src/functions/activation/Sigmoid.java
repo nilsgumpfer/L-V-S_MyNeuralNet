@@ -1,3 +1,5 @@
+package functions.activation;
+
 public class Sigmoid implements ActivationFunction {
     @Override
     public double calcOutput(double input) {
