@@ -1,7 +1,12 @@
+package functions.activation;
+
 public class ReLU implements ActivationFunction {
     @Override
     public double calcOutput(double input) {
-        return Math.max(0.0,input);
+        if(input < 0)
+            return 0;
+        else
+            return input;
     }
 
     @Override

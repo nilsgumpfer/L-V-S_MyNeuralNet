@@ -1,3 +1,5 @@
+package functions.activation;
+
 public class Gaussian implements ActivationFunction {
     @Override
     public double calcOutput(double input) {

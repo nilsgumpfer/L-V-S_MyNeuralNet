@@ -1,14 +1,14 @@
-public class ReLU implements ActivationFunction {
+package functions.activation;
+
+public class LeakyReLU implements ActivationFunction {
     @Override
     public double calcOutput(double input) {
-        return Math.max(0.0,input);
+        if(input < 0)
+            return 0.01 * input;
+        else
+            return input;
     }
 
     @Override
-    public double calcOutputForDerivative(double input) {
-        if (input > 0.0)
-            return 1.0;
-        else
-            return 0.0;
-    }
+    public double calcOutputForDerivative(double input) {return 0;}
 }
