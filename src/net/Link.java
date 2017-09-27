@@ -1,3 +1,7 @@
+package net;
+
+import globals.GlobalManager;
+
 public class Link {
     private double weight;
     private Node startNode;

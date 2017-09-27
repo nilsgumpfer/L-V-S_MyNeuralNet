@@ -1,3 +1,7 @@
+package net;
+
+import globals.GlobalEnum;
+
 public class LayerProperty {
     private int numberOfNodes;
     private GlobalEnum activationFunction;

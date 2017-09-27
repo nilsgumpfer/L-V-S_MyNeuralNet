@@ -1,5 +1,13 @@
+package globals;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import functions.activation.*;
+import net.LayerProperty;
+import net.LayerVisitor;
+import net.Link;
+import net.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +48,9 @@ public class Helper {
         return nodeList;
     }
 
-    public List<List<Node>> createLayersAndConnectThem(int numberOfLayers, LayerProperty... layerProperties) throws IllegalArgumentException {
+    public List<List<Node>> createLayersAndConnectThem(LayerProperty... layerProperties) throws IllegalArgumentException {
         List<List<Node>> layerCollection = new ArrayList<>();
-
-        if(numberOfLayers != layerProperties.length) {
-            throw new IllegalArgumentException("createLayersAndConnectThem(): You have to pass over a corresponding number of layers and properties");
-        }
+        int numberOfLayers = layerProperties.length;
 
         for (int i = 0; i < numberOfLayers; i++)
         {
@@ -64,6 +69,18 @@ public class Helper {
                 return new ReLU();
             case SIGMOID:
                 return new Sigmoid();
+            case TANH:
+                return new TanH();
+            case ARCTAN:
+                return new ArcTan();
+            case SOFTSIGN:
+                return new Softsign();
+            case SOFTPLUS:
+                return new SoftPlus();
+            case GAUSSIAN:
+                return new Gaussian();
+            case LEAKYRELU:
+                return new LeakyReLU();
             default:
                 return new Sigmoid();
         }
@@ -195,7 +212,7 @@ public class Helper {
 
         for (Node node : outputNodes)
         {
-            logger.info("Node {} : {}",node.getID(), node.getActivation());
+            logger.info("net.Node {} [{}] -> {}",node.getID(), node.getActivation(), (node.getActivation() >= GlobalManager.getInstance().getActiveThreshold()));
         }
     }
 }

@@ -1,3 +1,7 @@
+package net;
+
+import net.Link;
+import net.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,9 +1,13 @@
+package globals;
+
+import functions.loss.LossFunction;
+import net.Link;
+import net.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class Trainer {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -161,5 +165,21 @@ public class Trainer {
         }
 
         inputValues = values.toArray(new Double[]{});
+    }
+
+    public void test(List<List<Node>> net, double... binaryValueArray) throws IllegalArgumentException {
+        if(inputNodes.size() != binaryValueArray.length)
+            throw new IllegalArgumentException("Length of binary array does not correspond to input-layer size.");
+
+        int i = 0;
+
+        for (Node node : inputNodes) {
+            node.activate(binaryValueArray[i]);
+            i++;
+        }
+
+        propagate();
+
+        helper.logOutputs(net);
     }
 }

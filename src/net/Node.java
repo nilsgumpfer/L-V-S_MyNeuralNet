@@ -1,3 +1,6 @@
+package net;
+
+import functions.activation.ActivationFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +44,7 @@ public class Node {
 
     public void activate(double input) {
         activation = activationFunction.calcOutput(input);
-        //logger.trace("Node {} activated: input {} activation {}",nodeID, input, activation);
+        //logger.trace("net.Node {} activated: input {} activation {}",nodeID, input, activation);
     }
 
     public double getActivation(){
