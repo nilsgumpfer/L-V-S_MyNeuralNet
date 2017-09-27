@@ -3,6 +3,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class Trainer {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -12,38 +13,72 @@ public class Trainer {
     private List<Node> outputNodes;
     private Double[] inputValues;
     private double error;
+    private LossFunction lossFunction;
+    private int globalIterationCounter;
 
 
-    public Trainer(List<List<Node>> neuralNet)
+    public Trainer(List<List<Node>> neuralNet, LossFunction lossFunction)
     {
         this.neuralNet = neuralNet;
         inputNodes = helper.getInputNodes(neuralNet);
         outputNodes = helper.getOutputNodes(neuralNet);
+        this.lossFunction = lossFunction;
+        globalIterationCounter = 0;
     }
 
     private void init(){
         error = 0.0;
-        inputValues = new Double[]{};
+        //inputValues = new Double[]{};
     }
 
-    public void trainNet(int nTimes){
+    public double trainNet(int nTimes){
         init();
 
         for (int i = 0; i < nTimes; i++) {
-            logger.trace("Training {}/{} started",i,nTimes);
+            //logger.trace("Training {}/{} started",i,nTimes);
             activate();
             propagate();
             backpropagate();
             //helper.logOutputs(neuralNet);
+            globalIterationCounter++;
         }
 
         error = error / nTimes;
 
-        logger.info("Error: {}%",(int)(error*100));
+        //logger.trace("Success: {}%",100 - (int)(error*100));
+
+        return error;
     }
+
+    public void trainTillEnd(int nTrainIteration)
+    {
+        double currError;
+        double lastError = 100;
+
+        long start = System.currentTimeMillis();
+
+        do
+        {
+            currError = trainNet(nTrainIteration);
+
+            if(currError < lastError)
+            {
+                logger.info("Success: {}% [{}]", 100 - (int)(currError * 100), globalIterationCounter);
+
+                lastError = currError;
+            }
+
+        }while(currError > 0.0);
+
+        long duration = (System.currentTimeMillis() - start) / 1000;
+
+        logger.info("Training finished. Duration: {} s Iterations: {}", duration, globalIterationCounter);
+    }
+
     public void propagate(){
         new Helper().processActivation(neuralNet);
     }
+
     public void backpropagate() throws IllegalArgumentException
     {
         double targetValue = helper.convertBinToDec(inputValues);
@@ -60,14 +95,13 @@ public class Trainer {
         calculateAndAssignNewWeights();
         recalculateGlobalError(targetAnswer, givenAnswer);
 
-        logger.trace("target: {} given: {} error: {}",targetValue, givenValue, error);
+        //logger.trace("target: {} given: {} error: {}",targetValue, givenValue, error);
+        //logger.info("given: {}", givenValue);
     }
 
     private void recalculateGlobalError(Double[] targetAnswer, Double[] givenAnswer)
     {
-        // Compare target-answer and given answer. If number of active nodes differs, increase error
-        if(helper.countValuesGreaterThreshold(givenAnswer) != helper.countValuesGreaterThreshold(targetAnswer))
-            error++;
+        error += lossFunction.calcOutput(helper.countValuesGreaterThreshold(givenAnswer), helper.countValuesGreaterThreshold(targetAnswer));
     }
 
     private void calculateNodeErrors(Double[] targetAnswer)
@@ -75,8 +109,9 @@ public class Trainer {
         for (int i = 0; i < outputNodes.size(); i++)
         {
             Node currentNode = outputNodes.get(i);
-            double nodeError = currentNode.getActivation() * (1 - currentNode.getActivation()) * (targetAnswer[0] - currentNode.getActivation());
+            double nodeError = currentNode.getActivation() * (1 - currentNode.getActivation()) * (targetAnswer[i] - currentNode.getActivation());
 
+            //logger.trace("node error: {}", nodeError);
             currentNode.setError(nodeError);
         }
     }

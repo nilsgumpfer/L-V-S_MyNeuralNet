@@ -10,10 +10,7 @@ public class MainClass {
 
         mainClass.init();
         mainClass.createNet();
-
-        for (int i = 0; i < 100; i++) {
-            mainClass.train(10);
-        }
+        mainClass.train();
 
         //mainClass.logOutputs();
     }
@@ -24,17 +21,19 @@ public class MainClass {
     private void init()
     {
         GlobalManager.getInstance().setRandomWeightRange(-0.1,0.2);
+        GlobalManager.getInstance().setActiveThreshold(0.5);
     }
 
     private void createNet()
     {
+        GlobalEnum activationFunction = GlobalEnum.SIGMOID;
         net = new Helper().createLayersAndConnectThem(3,
-                new LayerProperty(4, GlobalEnum.SIGMOID),
-                new LayerProperty(6, GlobalEnum.SIGMOID),
-                new LayerProperty(15, GlobalEnum.SIGMOID));
+                new LayerProperty(4, activationFunction),
+                new LayerProperty(6, activationFunction),
+                new LayerProperty(15, activationFunction));
     }
 
-    private void train(int nTimes) {
-        new Trainer(net).trainNet(nTimes);
+    private void train() {
+        new Trainer(net, new CountMisses()).trainTillEnd(50);
     }
 }

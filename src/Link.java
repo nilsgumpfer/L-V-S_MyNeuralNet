@@ -18,8 +18,11 @@ public class Link {
         return weight;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setWeight(Double weight) {
+        if(weight.isNaN())
+            this.weight = GlobalManager.getInstance().getRandomWeight(); //TODO: sth is wrong here with NaN stuff
+        else
+            this.weight = weight;
     }
 
     public Node getEndNode() {

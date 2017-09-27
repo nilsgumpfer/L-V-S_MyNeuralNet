@@ -18,7 +18,7 @@ public class Node {
     public Node(int layer, int nodeNumber, ActivationFunction activationFunction) {
         this.activationFunction = activationFunction;
         this.nodeID = layer + "-" + nodeNumber;
-        logger.trace("Created node {}", nodeID);
+        //logger.trace("Created node {}", nodeID);
     }
 
     public void connectLink(Link incoming)
@@ -41,7 +41,7 @@ public class Node {
 
     public void activate(double input) {
         activation = activationFunction.calcOutput(input);
-        logger.trace("Node {} activated: input {} activation {}",nodeID, input, activation);
+        //logger.trace("Node {} activated: input {} activation {}",nodeID, input, activation);
     }
 
     public double getActivation(){

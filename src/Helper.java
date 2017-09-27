@@ -13,7 +13,7 @@ public class Helper {
             for(Node nodeTwo : layerTwo)
             {
                 nodeTwo.connectLink(nodeOne.pullLink());
-                logger.trace("Connected node {} to node {}",nodeOne.getID(), nodeTwo.getID());
+                //logger.trace("Connected node {} to node {}",nodeOne.getID(), nodeTwo.getID());
             }
         }
     }
@@ -106,7 +106,7 @@ public class Helper {
         double result = 0.0;
 
         for (int i = 0; i < outputNodes.size(); i++) {
-            if(outputNodes.get(i).getActivation() >= GlobalManager.getInstance().getActiveThreshold())
+            if(outputNodes.get(i).getActivation() > GlobalManager.getInstance().getActiveThreshold())
                 result++;
         }
 
