@@ -20,7 +20,7 @@ public class MainClass {
 
         mainClass.init();
         mainClass.train();
-        mainClass.test();
+        //mainClass.test();
     }
 
     private void test() {
@@ -39,6 +39,7 @@ public class MainClass {
     {
         GlobalManager.getInstance().setRandomWeightRange(-0.2,0.2);
         GlobalManager.getInstance().setActiveThreshold(0.5);
+        GlobalManager.getInstance().setLearningRate(0.5);
 
         GlobalEnum activationFunction = GlobalEnum.SIGMOID;
         net = new Helper().createLayersAndConnectThem(
