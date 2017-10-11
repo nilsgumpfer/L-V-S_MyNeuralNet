@@ -30,8 +30,15 @@ public class GlobalManager {
         randRangeLow = low;
     }
     public double getRandomWeight(){
-        double rand = ThreadLocalRandom.current().nextDouble(randRangeLow, randRangeHigh);
-        //logger.trace("RAND: {}", rand);
+        double rand;
+
+        // Ensure only values slightly larger or less than 0 are taken (improves learning)
+        do{
+            rand = ThreadLocalRandom.current().nextDouble(randRangeLow, randRangeHigh);
+        }while(rand < 0.005 && rand > -0.005 );
+
+        //logger.info("{}",rand);
+
         return rand;
     }
 
@@ -55,5 +62,9 @@ public class GlobalManager {
 
     public void setActiveThreshold(double activeThreshold) {
         this.activeThreshold = activeThreshold;
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
     }
 }
